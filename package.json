@@ -1,0 +1,11 @@
+{
+  "name": "resume-bits",
+  "private": true,
+  "scripts": {},
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "npm-run-all2": "^6.2.0"
+  }
+}
