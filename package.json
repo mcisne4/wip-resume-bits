@@ -2,7 +2,7 @@
   "name": "resume-bits",
   "private": true,
   "scripts": {
-    "dev-env": "cd packages/env && LOG=false bun run --watch src/index.ts",
+    "dev-env": "cd packages/env && bun dev",
     "dev-logger": "cd packages/logger && bun run --watch src/index.ts"
   },
   "workspaces": [
