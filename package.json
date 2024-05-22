@@ -1,9 +1,10 @@
 {
   "name": "resume-bits",
   "private": true,
+  "version": "0.0.1",
   "scripts": {
     "dev-env": "cd packages/env && bun dev",
-    "dev-logger": "cd packages/logger && bun run --watch src/index.ts"
+    "dev-logger": "cd packages/logger && bun run dev"
   },
   "workspaces": [
     "packages/*"
