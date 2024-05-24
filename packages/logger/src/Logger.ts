@@ -11,7 +11,7 @@ enum LogType {
   ERROR = "ERROR",
 }
 
-export class Logger {
+export class ReLogger {
   private readonly _shouldLog: boolean;
 
   private readonly _tsty: DeepReadonly<{
@@ -34,49 +34,49 @@ export class Logger {
   }>;
 
   constructor(config?: {
-    timestamp_style?: {
-      info?: ChalkInstance;
-      warn?: ChalkInstance;
-      error?: ChalkInstance;
-    };
-    message_style?: {
-      title?: ChalkInstance;
-      status?: ChalkInstance;
-      pass?: ChalkInstance;
-      fail?: ChalkInstance;
-      error?: ChalkInstance;
-      errorTitle?: ChalkInstance;
-    };
-    symbols?: {
-      pass?: string;
-      fail?: string;
-      error?: string;
-    };
+    info_timestamp_style?: ChalkInstance;
+    warn_timestamp_style?: ChalkInstance;
+    error_timestamp_style?: ChalkInstance;
+
+    title_message_style?: ChalkInstance;
+    status_message_style?: ChalkInstance;
+    pass_message_style?: ChalkInstance;
+    fail_message_style?: ChalkInstance;
+    error_message_style?: ChalkInstance;
+    error_title_message_style?: ChalkInstance;
+
+    pass_symbol_style?: ChalkInstance;
+    fail_symbol_style?: ChalkInstance;
+    error_symbol_style?: ChalkInstance;
+
+    pass_symbol?: string;
+    fail_symbol?: string;
+    error_symbol?: string;
   }) {
     this._shouldLog = LOG;
 
     this._tsty = {
-      info: config?.timestamp_style?.info ?? this._styleless,
-      warn: config?.timestamp_style?.warn ?? this._styleless,
-      error: config?.timestamp_style?.error ?? this._styleless,
+      info: config?.info_timestamp_style ?? this._styleless,
+      warn: config?.warn_timestamp_style ?? this._styleless,
+      error: config?.error_timestamp_style ?? this._styleless,
     };
     this._msty = {
-      title: config?.message_style?.title ?? this._styleless,
-      status: config?.message_style?.status ?? this._styleless,
-      pass: config?.message_style?.pass ?? this._styleless,
-      fail: config?.message_style?.fail ?? this._styleless,
-      error: config?.message_style?.error ?? this._styleless,
-      errorTitle: config?.message_style?.errorTitle ?? this._styleless,
+      title: config?.title_message_style ?? this._styleless,
+      status: config?.status_message_style ?? this._styleless,
+      pass: config?.pass_message_style ?? this._styleless,
+      fail: config?.fail_message_style ?? this._styleless,
+      error: config?.error_message_style ?? this._styleless,
+      errorTitle: config?.error_title_message_style ?? this._styleless,
     };
     this._sym = {
-      pass: config?.symbols?.pass ?? null,
-      fail: config?.symbols?.fail ?? null,
-      error: config?.symbols?.error ?? null,
+      pass: config?.pass_symbol ?? null,
+      fail: config?.fail_symbol ?? null,
+      error: config?.error_symbol ?? null,
     };
   }
 
-  private _styleless(...text: unknown[]): string {
-    return (text as string[]).join(" ");
+  private _styleless(...message: unknown[]): string {
+    return (message as string[]).join(" ");
   }
 
   private _logger(
