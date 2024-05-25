@@ -1,17 +1,18 @@
 import type { ChalkInstance } from "chalk";
 import type { DeepReadonly } from "./util/types";
 import { LOG } from "env";
+import chalk from "chalk";
 
 type StyleFn = ChalkInstance | ((...message: unknown[]) => string);
 enum LogType {
-  TITLE = "LOG",
-  STATUS = "LOG",
-  PASS = "LOG",
+  TITLE = "INFO",
+  STATUS = "INFO",
+  PASS = "INFO",
   FAIL = "WARN",
   ERROR = "ERROR",
 }
 
-export class ReLogger {
+export class Logger {
   private readonly _shouldLog: boolean;
 
   private readonly _tsty: DeepReadonly<{
@@ -68,11 +69,24 @@ export class ReLogger {
       error: config?.error_message_style ?? this._styleless,
       errorTitle: config?.error_title_message_style ?? this._styleless,
     };
-    this._sym = {
-      pass: config?.pass_symbol ?? null,
-      fail: config?.fail_symbol ?? null,
-      error: config?.error_symbol ?? null,
+
+    let sym = {
+      pass: config?.pass_symbol || null,
+      fail: config?.fail_symbol || null,
+      error: config?.error_symbol || null,
     };
+
+    if (sym.pass && config?.pass_symbol_style) {
+      sym.pass = config.pass_symbol_style(sym.pass);
+    }
+    if (sym.fail && config?.fail_symbol_style) {
+      sym.fail = config.fail_symbol_style(sym.fail);
+    }
+    if (sym.error && config?.error_symbol_style) {
+      sym.error = config.error_symbol_style(sym.error);
+    }
+
+    this._sym = sym;
   }
 
   private _styleless(...message: unknown[]): string {
@@ -95,7 +109,11 @@ export class ReLogger {
     const minutes = now.getMinutes().toString().padStart(2, "0");
     const seconds = now.getSeconds().toString().padStart(2, "0");
 
-    const TIMESTAMP = t_style(`[${hours}:${minutes}:${seconds} ${logType}]`);
+    const TIMESTAMP = t_style(
+      `[${hours}:${minutes}:${seconds} ${
+        logType !== LogType.ERROR ? " " : ""
+      }${chalk.underline(logType)}]`
+    );
 
     let content: unknown[] = message;
     if (sym_start) content = [sym_start, ...content];

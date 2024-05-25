@@ -1,4 +1,4 @@
-import { LOG } from "env";
+import { LOGGER_CONFIG } from "env";
+import { Logger } from "./Logger";
 
-console.log("Hello via Bun from 'logger'!");
-console.log("LOG:", LOG);
+export const logger = new Logger(LOGGER_CONFIG);
