@@ -4,11 +4,14 @@
   "version": "0.0.1",
   "scripts": {
     "dev-env": "cd packages/env && bun dev",
-    "dev-logger": "cd packages/logger && bun run dev"
+    "dev-logger": "cd packages/logger && bun run dev",
+    "dev-docs": "cd packages/docs && bun run dev",
+    "create-docs": "cd packages/docs && bun run create-docs"
   },
   "workspaces": [
     "packages/env",
-    "packages/logger"
+    "packages/logger",
+    "packages/docs"
   ],
   "dependencies": {
     "npm-run-all2": "^6.2.0"
