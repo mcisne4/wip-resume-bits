@@ -1,91 +1,81 @@
-import type { BunFile } from "bun";
+import { existsSync, mkdirSync } from "fs";
+import { dirname, basename, extname } from "path";
 import chalk from "chalk";
-import { existsSync, mkdirSync, statSync } from "fs";
-import { dirname, resolve, normalize, extname, basename } from "path";
-import { logger } from "logger";
+import type { BunFile } from "bun";
+import { logger } from "./logger";
+
+function logError(id: string, title: string, details: string) {
+  logger.errorTitle(id, title);
+  logger.error(id, details);
+}
 
 export class MarkdownFile {
   private readonly _file: BunFile;
-  private readonly _id: string;
-  private readonly _sty1 = chalk.yellowBright;
-  private _data: string = "";
+  private _data = "";
 
-  private log_title(...message: unknown[]) {
-    const style = chalk.hex("#d22d9b");
-    logger.title(style(this._id), ...message);
-  }
-  private log_status(...message: unknown[]) {
-    const style = chalk.hex("#d22d9b");
-    logger.status(style(this._id), ...message);
-  }
-  private log_pass(...message: unknown[]) {
-    const style = chalk.hex("#ec13a4").italic;
-    logger.pass(style(this._id), ...message);
-  }
-  private log_fail(...message: unknown[]) {
-    const style = chalk.hex("#d22d9b");
-    logger.fail(style(this._id), ...message);
-  }
-  private log_error(title: string, details: string) {
-    const style = chalk.hex("#ec1313");
-    logger.errorTitle(style(this._id), title);
-    logger.error(details);
-  }
+  private str_style1 = chalk.yellowBright.italic;
+  private str_style2 = chalk.yellow.bold;
 
-  constructor(file_path: string, id?: string) {
-    const dir = dirname(file_path);
-    const ext = extname(file_path);
-    const name = basename(file_path, ext);
+  constructor(private id: string, file_path: string) {
+    const filename = basename(file_path);
+    let dir = dirname(file_path);
+    if (!dir.endsWith("/")) dir += "/";
 
-    this._id = id ? `[${id}]` : `[${name.toUpperCase()}]`;
+    logger.title(id, "Initializing Markdown File");
+    logger.status(
+      id,
+      "File Path:",
+      `${this.str_style1(dir)}${this.str_style2(filename)}`
+    );
 
-    this.log_title("Initializing MarkdownFile");
-    this.log_status("File Directory:", this._sty1(`"${dir}"`));
-    this.log_status("File Name:", this._sty1(`"${name}${ext}"`));
+    if (extname(file_path) !== ".md") {
+      logError(
+        id,
+        "Invalid Markdown File Path",
+        "The file path must point to a markdown file with the extension of '.md'"
+      );
 
-    switch (true) {
-      case ext !== ".md":
-        this.log_error(
-          "Invalid Markdown File Path",
-          "The file path must point to a markdown file with the extension of '.md'"
-        );
-
-        throw new Error("Invalid Markdown File Path");
-
-      case existsSync(file_path):
-        this.log_pass("Markdown File Exists");
-        this.log_fail("NOTE: Existing data will be overwritten");
-        this._file = Bun.file(file_path);
-        break;
-
-      case existsSync(dir):
-        this.log_fail("Markdown File Does Not Exist");
-        this.log_pass("Markdown File Directory Exists");
-        this._file = Bun.file(file_path);
-
-        this._createMdFile();
-        break;
-
-      default:
-        logger.fail("Markdown File Does Not Exist");
-        logger.fail("Markdown File Directory Does Not Exist");
-
-        this._createMdDir(dir);
-
-        this._file = Bun.file(file_path);
-
-        this._createMdFile();
-        break;
+      throw new Error("Invalid Markdown File Path");
     }
+
+    if (existsSync(file_path)) {
+      logger.pass(
+        id,
+        "Markdown File Found.",
+        this.str_style2("NOTE:"),
+        this.str_style1("Existing data will be overwritten")
+      );
+      this._file = Bun.file(file_path);
+      return;
+    }
+
+    if (existsSync(dir)) {
+      logger.fail(id, "Markdown File Does Not Exist");
+      logger.pass(id, "Markdown File Directory Exists");
+      this._file = Bun.file(file_path);
+
+      this._createMdFile();
+      return;
+    }
+
+    logger.fail(id, "Markdown File Does Not Exist");
+    logger.fail(id, "Markdown File Directory Does Not Exist");
+
+    this._createMdDir(dir);
+
+    this._file = Bun.file(file_path);
+
+    this._createMdFile();
   }
   private _createMdDir(dir: string) {
     try {
       mkdirSync(dir, { recursive: true });
-      this.log_pass("Markdown File Directory Created");
+      logger.pass(this.id, "Markdown File Directory Created");
     } catch (error) {
       if (error instanceof Error) {
-        this.log_error(
-          "Unable To Create Markdown File Directory",
+        logError(
+          this.id,
+          "Unable to Create Markdown File Directory",
           error.message
         );
 
@@ -96,41 +86,80 @@ export class MarkdownFile {
   private _createMdFile() {
     try {
       Bun.write(this._file, this._data);
-      this.log_pass("Markdown File Created");
+      logger.pass(this.id, "Markdown File Created");
     } catch (error) {
       if (error instanceof Error) {
-        this.log_error("Unable To Create Markdown File", error.message);
-
+        logError(this.id, "Unable to Create Markdown File", error.message);
         throw error;
       }
     }
   }
 
   write() {
-    this.log_title("Writting data to disk");
+    logger.title(this.id, "Writting Data to Disk");
 
     try {
       Bun.write(this._file, this._data);
-      this.log_pass("Successful in writting data to disk");
+      logger.pass(this.id, "Data written to disk successfully");
     } catch (error) {
       if (error instanceof Error) {
-        this.log_error("Failed in writting data to disk", error.message);
-
+        logError(this.id, "Unable to Write Data to Disk", error.message);
         throw error;
       }
     }
   }
 
-  appendFile(file_path: string) {
-    this.log_title("Appending Markdown Data from File");
-    this.log_status("File Path:", this._sty1(`"${file_path}"`));
+  async appendFile(file_path: string) {
+    const filename = basename(file_path);
+    let dir = dirname(file_path);
+    if (!dir.endsWith("/")) dir += "/";
 
-    // switch (true) {
-    //   case extname(file_path) !== ".md":
-    //     break;
+    logger.title(this.id, "Appending Markdown Data from File");
+    logger.status(
+      this.id,
+      "File Path:",
+      `${this.str_style1(dir)}${this.str_style2(filename)}`
+    );
 
-    //   default:
-    //     break;
-    // }
+    if (extname(file_path) !== ".md") {
+      logError(
+        this.id,
+        "Invalid Markdown File Path",
+        "The file path must point to a markdown file with the extension of '.md'"
+      );
+
+      throw new Error("Invalid Markdown File Path");
+    }
+
+    if (!existsSync(file_path)) {
+      logError(
+        this.id,
+        "Markdown File Does Not Exist",
+        "The file path must point to an existing markdown file"
+      );
+      throw new Error("Invalid Markdown File Path");
+    }
+
+    logger.pass(this.id, "Markdown file found.");
+
+    let contents: string;
+
+    try {
+      contents = await Bun.file(file_path).text();
+      logger.pass(this.id, "Markdown file contents successfully read");
+    } catch (error) {
+      if (error instanceof Error) {
+        logError(this.id, "Unable to Read Markdown File", error.message);
+        throw error;
+      }
+
+      contents = "";
+    }
+
+    while (!contents.endsWith("\n\n\n")) {
+      contents += "\n";
+    }
+
+    this._data += contents;
   }
 }

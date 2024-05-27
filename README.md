@@ -2,6 +2,7 @@
 
 This is the monorepo for the _resume_ builder **Resume Bits**
 
+
 ## Monorepo Packages
 
 The monorepo consists of various packages accomplishing different tasks. The different packages are available in the `packages` folder.
@@ -12,6 +13,7 @@ The monorepo consists of various packages accomplishing different tasks. The dif
 | ------------ | ----------------------------------------------- |
 | `env`        | Responsible for reading _Environment Variables_ |
 | `logger`     | Used for logging information to the console.    |
+
 
 ## Development Environment
 
@@ -31,6 +33,7 @@ Although not listed under the _package.json_ scripts, the following commands are
 | Command Name  | Description                |
 | ------------- | -------------------------- |
 | `bun install` | Installs bun dependencies. |
+
 
 ## Environmental Variables
 
@@ -177,3 +180,5 @@ INFO_TIMESTAMP_STYLE=Bg 0x 8F 36 B7 | Fg 0x 8F 36 B7
 - **Case-Insensitive** - The hex strings are case-insensitive. Use any combination of uppercase and lowercase characters to better visualize the hex strings.
 - **Ignored-Characters** - The following characters are ignored: ` `, `_`, `;`, `:`, `-`, `.`, `"`
   - Use any combination of these characters to visually separate content
+
+
