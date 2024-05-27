@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "bun run --watch --env-file=../../.env src/index.ts",
-    "create-docs": "bun run src/index.ts"
+    "create-docs": "bunx run-s root-readme-docs",
+    "root-readme-docs": "bun run --env-file=../../.env src/monorepo-readme.ts"
   },
   "dependencies": {
     "chalk": "^5.3.0",
@@ -13,7 +14,8 @@
     "env": "workspace:env"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "npm-run-all2": "^6.2.0"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
