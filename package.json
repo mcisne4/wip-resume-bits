@@ -6,12 +6,14 @@
     "dev-env": "cd packages/env && bun dev",
     "dev-logger": "cd packages/logger && bun run dev",
     "dev-docs": "cd packages/docs && bun run dev",
+    "dev-ui": "cd packages/ui && bun run dev",
     "create-docs": "cd packages/docs && bun run create-docs"
   },
   "workspaces": [
     "packages/env",
     "packages/logger",
-    "packages/docs"
+    "packages/docs",
+    "packages/ui"
   ],
   "dependencies": {
     "npm-run-all2": "^6.2.0"
