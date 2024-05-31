@@ -12,7 +12,7 @@
 		"format": "prettier --write .",
 		"generate-dir": "mkdir -p src/generated/edgeql",
 		"generate-interfaces": "bunx @edgedb/generate interfaces --force-overwrite --file src/generated/interfaces.ts",
-		"generate-queries": "bunx @edgedb/generate queries --force-overwrite --file src/generated/queries.ts",
+		"generate-queries": "bunx @edgedb/generate queries --force-overwrite --file src/generated/queries",
 		"generate-edgeql": "bunx @edgedb/generate edgeql-js --force-overwrite --output-dir src/generated/edgeql",
 		"generate": "bun run-s generate-dir generate-interfaces generate-queries generate-edgeql"
 	},
