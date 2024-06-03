@@ -93,6 +93,7 @@
 		flex-direction: column;
 		gap: 0.3rem;
 		max-height: 40rem;
+		max-height: calc(100vh - 7.8rem);
 		overflow-y: scroll;
 
 		&.left {

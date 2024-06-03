@@ -50,9 +50,29 @@
 }
 */
 
+@media screen {
+	body {
+		background-color: #000;
+		color: #999;
+	}
+}
+@media print {
+	@page {
+		size: letter;
+		margin: 0.3in;
+	}
+	html,
+	body {
+		width: 8.5in;
+		height: 11in;
+		overflow: visible;
+	}
+	body {
+		background-color: transparent;
+		color: #000;
+	}
+}
 body {
-	background-color: #000;
-	color: #999;
 	font-family: 'Poppins', sans-serif;
 	font-weight: 400;
 	font-style: normal;
