@@ -46,18 +46,18 @@ function createMenuState() {
 				btnLanguage: () =>
 					update((currentState) => toggleDataMenu(currentState, 'language')),
 			},
-		},
 
-		composeMenu: {
-			btnItem: (id: string) =>
-				update((currentState) => toggleComposeMenu(currentState, 'item', id)),
-			btnAdd: () =>
-				update((currentState) => toggleComposeMenu(currentState, 'add')),
-		},
+			composeMenu: {
+				btnItem: (id: string) =>
+					update((currentState) => toggleComposeMenu(currentState, 'item', id)),
+				btnAdd: () =>
+					update((currentState) => toggleComposeMenu(currentState, 'add')),
+			},
 
-		previewMenu: {
-			btnItem: (id: string) =>
-				update((currentState) => togglePreviewMenu(currentState, 'item', id)),
+			previewMenu: {
+				btnItem: (id: string) =>
+					update((currentState) => togglePreviewMenu(currentState, 'item', id)),
+			},
 		},
 	};
 }

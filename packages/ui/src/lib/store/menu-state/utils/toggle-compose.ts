@@ -20,6 +20,10 @@ export function toggleComposeMenu(
 				menu.composeMenu = compose;
 				menu.page = 'Compose_Item';
 				menu.composeId = id || null;
+			} else if (currentState.composeId !== id) {
+				menu.composeMenu = compose;
+				menu.page = 'Compose_Item';
+				menu.composeId = id || null;
 			}
 			break;
 

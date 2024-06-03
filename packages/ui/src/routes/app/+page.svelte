@@ -1,15 +1,17 @@
 <script lang="ts">
-	import Menu from '$lib/components/Menu.svelte';
+	import Menu from '$lib/components/menu/Menu.svelte';
 	import { ScreenType, pageType } from '$lib/store/page-type';
+	import { menuState } from '$lib/store/menu-state';
+
+	menuState.reset();
 </script>
 
 <main>
-	<div class="menu-container">
-		<Menu />
-	</div>
+	<Menu />
 
 	<div class="page-container" class:printable={$pageType === ScreenType.Print}>
 		<h1>Page Content</h1>
+		<p>{$menuState.page}</p>
 	</div>
 </main>
 
@@ -23,9 +25,6 @@
 	}
 
 	@media screen {
-		.menu-container {
-			display: flex;
-		}
 		.page-container {
 			display: flex;
 		}
@@ -35,9 +34,6 @@
 		main {
 			padding: 0;
 			gap: 0;
-		}
-		.menu-container {
-			display: none;
 		}
 		.page-container {
 			display: none;
@@ -49,14 +45,8 @@
 		}
 	}
 
-	.menu-container {
-		flex-direction: column;
-		min-width: 1rem;
-		background-color: #212121;
-	}
 	.page-container {
 		flex-direction: column;
-		// width: 8.5in;
 		min-width: 1rem;
 		background-color: #212121;
 	}

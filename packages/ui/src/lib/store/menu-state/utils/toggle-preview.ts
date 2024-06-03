@@ -20,6 +20,10 @@ export function togglePreviewMenu(
 				menu.previewMenu = preview;
 				menu.page = 'Preview_Item';
 				menu.previewId = id;
+			} else if (currentState.previewId !== id) {
+				menu.previewMenu = preview;
+				menu.page = 'Preview_Item';
+				menu.previewId = id;
 			}
 			break;
 
