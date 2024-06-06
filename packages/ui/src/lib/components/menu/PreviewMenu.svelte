@@ -4,7 +4,7 @@
 	import { menuState } from '$lib/store/menu-state';
 </script>
 
-<ColumnTitle>Select Resume</ColumnTitle>
+<ColumnTitle>My Resumes</ColumnTitle>
 
 <MenuButton
 	active={$menuState.previewMenu === 'item' &&

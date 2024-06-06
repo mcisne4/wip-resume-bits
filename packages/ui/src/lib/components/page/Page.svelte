@@ -41,6 +41,8 @@
 		--bg01: #212121;
 		--bg02: #323232;
 		--fg01: #aaa;
+		--fg02: teal;
+		--fg03: #e050e0;
 
 		flex-direction: column;
 		overflow: scroll;

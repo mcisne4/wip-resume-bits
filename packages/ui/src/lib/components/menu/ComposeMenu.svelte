@@ -6,7 +6,7 @@
 	import { menuState } from '$lib/store/menu-state';
 </script>
 
-<ColumnTitle>Edit Resume</ColumnTitle>
+<ColumnTitle>My Resumes</ColumnTitle>
 
 <MenuButton
 	active={$menuState.composeMenu === 'item' &&

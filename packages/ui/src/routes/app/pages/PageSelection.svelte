@@ -1,16 +1,21 @@
 <script lang="ts">
 	import TempContent from './TempContent.svelte';
+
 	import { menuState } from '$lib/store/menu-state';
+	import CategorySelection from './CategorySelection.svelte';
+	import DataSelection from './DataSelection.svelte';
+	import ComposeSelection from './ComposeSelection.svelte';
+	import PreviewSelection from './PreviewSelection.svelte';
 </script>
 
 {#if $menuState.page === 'Select_Category'}
-	<TempContent />
+	<CategorySelection />
 {:else if $menuState.page === 'Select_Data'}
-	<TempContent />
+	<DataSelection />
 {:else if $menuState.page === 'Select_Compose'}
-	<TempContent />
+	<ComposeSelection />
 {:else if $menuState.page === 'Select_Preview'}
-	<TempContent />
+	<PreviewSelection />
 {:else if $menuState.page === 'Data_Person'}
 	<TempContent />
 {:else if $menuState.page === 'Data_JobTitle'}
