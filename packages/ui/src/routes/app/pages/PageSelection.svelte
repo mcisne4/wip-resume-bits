@@ -6,6 +6,7 @@
 	import DataSelection from './DataSelection.svelte';
 	import ComposeSelection from './ComposeSelection.svelte';
 	import PreviewSelection from './PreviewSelection.svelte';
+	import DataNames from './DataNames.svelte';
 </script>
 
 {#if $menuState.page === 'Select_Category'}
@@ -17,7 +18,7 @@
 {:else if $menuState.page === 'Select_Preview'}
 	<PreviewSelection />
 {:else if $menuState.page === 'Data_Person'}
-	<TempContent />
+	<DataNames />
 {:else if $menuState.page === 'Data_JobTitle'}
 	<TempContent />
 {:else if $menuState.page === 'Data_Address'}

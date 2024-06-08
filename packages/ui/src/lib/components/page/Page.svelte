@@ -40,9 +40,11 @@
 	.page-container {
 		--bg01: #212121;
 		--bg02: #323232;
+		--bg03: #434343;
 		--fg01: #aaa;
 		--fg02: teal;
 		--fg03: #e050e0;
+		--fg04: hsl(0, 100%, 60%);
 
 		flex-direction: column;
 		overflow: scroll;
@@ -52,5 +54,6 @@
 		display: flex;
 		flex-direction: column;
 		width: 8.5in;
+		flex-grow: 1;
 	}
 </style>
